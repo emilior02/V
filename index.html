@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Valentine?</title>
+
   <style>
     body {
       margin: 0;
@@ -11,7 +13,7 @@
       align-items: center;
       justify-content: center;
       background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-      font-family: 'Arial', sans-serif;
+      font-family: Arial, sans-serif;
       overflow: hidden;
     }
 
@@ -21,6 +23,8 @@
       padding: 40px;
       border-radius: 20px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      position: relative;
+      z-index: 2; /* keep this above the side images */
     }
 
     h1 {
@@ -46,10 +50,41 @@
       background-color: #adb5bd;
       color: white;
       position: absolute;
+      z-index: 3;
+    }
+
+    /* --- Side images --- */
+    .side-image {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 220px;     /* adjust size */
+      opacity: 0.9;
+      z-index: 1;
+      pointer-events: none; /* so they don't block buttons */
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    .left { left: 20px; }
+    .right { right: 20px; }
+
+    /* --- Mobile-friendly: hide side images on small screens --- */
+    @media (max-width: 768px) {
+      .side-image { display: none; }
+      .container {
+        width: min(90vw, 420px);
+        padding: 28px;
+      }
+      h1 { font-size: 24px; }
     }
   </style>
 </head>
+
 <body>
+  <!-- Replace left.jpg and right.jpg with your actual uploaded filenames -->
+  <img src="left.jpg" class="side-image left" alt="Left image">
+  <img src="right.jpg" class="side-image right" alt="Right image">
 
   <div class="container">
     <h1>Jiwoo, will you be my valentine this year? 💘</h1>
@@ -61,6 +96,14 @@
   <script>
     const noButton = document.getElementById("no");
 
+    // Place "No" somewhere reasonable on load
+    function placeNoInitially() {
+      const x = Math.random() * (window.innerWidth - noButton.offsetWidth);
+      const y = Math.random() * (window.innerHeight - noButton.offsetHeight);
+      noButton.style.left = `${x}px`;
+      noButton.style.top = `${y}px`;
+    }
+
     function moveButton() {
       const x = Math.random() * (window.innerWidth - noButton.offsetWidth);
       const y = Math.random() * (window.innerHeight - noButton.offsetHeight);
@@ -68,6 +111,8 @@
       noButton.style.top = `${y}px`;
     }
 
+    window.addEventListener("load", placeNoInitially);
+    window.addEventListener("resize", placeNoInitially);
     noButton.addEventListener("mouseenter", moveButton);
 
     document.getElementById("yes").addEventListener("click", () => {
@@ -79,8 +124,9 @@
           justify-content:center;
           background:linear-gradient(135deg,#ff9a9e,#fad0c4);
           font-family:Arial;
-          text-align:center;">
-          <h1 style="color:#e63946;">
+          text-align:center;
+          padding: 24px;">
+          <h1 style="color:#e63946; font-size: 42px; line-height: 1.15;">
             YAYYY 💕🥰<br>
             Best Valentine ever 💘
           </h1>
@@ -88,6 +134,5 @@
       `;
     });
   </script>
-
 </body>
 </html>
